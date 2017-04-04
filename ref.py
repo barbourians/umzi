@@ -4,11 +4,11 @@ import time
 # --------------------------------------------------------
 # Get the filename as an input parameter
 # --------------------------------------------------------
-inputfiledir = 'C:\\Users\\Ian\\Dropbox\\Python\\umzi\\data'
+inputfiledir = 'c:\\python\\data\\umzi'
 inputfiledir+='\\'
 inputfilename = r''
 inputfilename+=inputfiledir
-inputfilename+='mpaskevicius'
+inputfilename+='mptest'
 inputfilename+='.txt'
 
 # --------------------------------------------------------
@@ -25,13 +25,14 @@ vError = 0
 vLine = 0
 vOutput = ''
 vPage = 0
+vRefPage =''
 vRev = ''
 vShowBiblio = None
 
 # --------------------------------------------------------
 # Print output headings
 # --------------------------------------------------------
-vOutput = 'Chapter | Page | Line | Reference'
+vOutput = 'Chapter | Page | Reference | Quote Page'
 print (vOutput)
 
 # --------------------------------------------------------
@@ -104,12 +105,18 @@ while 1:
         if not vRef.count(',') == 1: continue
    
         # We have a reference!
-        # Strip out the page number if there is one
+        # Extract the page number if there is one
+        vRefPage =''
         if vRef.count(':') > 0:
+            vRefPage = vRef[vRef.find(':')+1:]
             vRef = vRef[0:vRef.find(':')]
 
+        # Strip out the spaces
+        vRef = vRef.strip()
+        vRefPage = vRefPage.strip()
+        
         # Output the Line Number | Reference | Chapter
-        vOutput = vChapterTxt+'|'+vPage+'|'+str(vLine)+'|'+vRef
+        vOutput = vChapterTxt+'|'+vPage+'|'+vRef+'|'+vRefPage
         print (vOutput)
 
     # End while
