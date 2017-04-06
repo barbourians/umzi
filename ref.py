@@ -19,6 +19,7 @@ fin = open(inputfilename, 'r')
 # --------------------------------------------------------
 # Initialise all the variables
 # --------------------------------------------------------
+vBiblio = 0
 vChapter = 0
 vChapterTxt = ''
 vError = 0
@@ -46,8 +47,9 @@ while 1:
     vLine+=1
     
     # Extract the page number if present
-    if line.count('Page ') > 0 and line.count(' of ') > 0: 
-        vPage = line[5:line.find(' of ')]
+    s = line.strip()
+    if s[0:5] == 'Page ' and s.count(' of ') > 0: 
+        vPage = s[5:s.find(' of ')]
         continue
     
     # If Reference section is reached then output the references
@@ -59,8 +61,9 @@ while 1:
         continue
     
     if vShowBiblio:
+        vBiblio+=1
         vOutput = line[0:line.find('Available online')]
-        print (vOutput)
+#        print (vOutput)
         continue
     
     # TODO See if the line contains an opening bracket but no closing bracket (i.e a broken reference)
@@ -98,12 +101,16 @@ while 1:
         # Ignore if reference starts with: Interviewee
         if vRef[0:12] == ('Interviewee '): continue
 
-        # Ignore if the year doesn't start with 1 or 2
-        if vRef.count(', 1') == 0 and vRef.count(', 2') == 0: continue
-
+        ## TODO What to do with references that are just the year?
+        if not vRef.count(',') == 1: continue
+           
+   
         ## TODO Ignore if there is not one comma only
         if not vRef.count(',') == 1: continue
    
+        # Ignore if the year doesn't start with 1 or 2
+        if vRef.count(', 1') == 0 and vRef.count(', 2') == 0: continue
+
         # We have a reference!
         # Extract the page number if there is one
         vRefPage =''
@@ -127,6 +134,11 @@ while 1:
 #print ('--------------------------------------------------')
 #print ('There are',str(vChapter),'chapters in this dissertation')
 #print ('==================================================')
+
+# Print chapter count
+print ('--------------------------------------------------')
+print ('There are',str(vBiblio),'References')
+print ('==================================================')
 
 # Print error count
 if vError > 0:
