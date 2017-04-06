@@ -53,14 +53,14 @@ while 1:
     # If Reference section is reached then output the references
     if line[0:12] == '@@References':
         vShowBiblio = True;
-#        print ('--------------------------------------------------')
-#        print ('References')
-#        print ('==================================================')
+        print ('--------------------------------------------------')
+        print ('References')
+        print ('==================================================')
         continue
     
     if vShowBiblio:
-        vOutput = line
-#        print (vOutput, end='')
+        vOutput = line[0:line.find('Available online')]
+        print (vOutput)
         continue
     
     # TODO See if the line contains an opening bracket but no closing bracket (i.e a broken reference)
