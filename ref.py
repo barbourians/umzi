@@ -23,7 +23,8 @@ vBiblio = 0
 vChapter = 0
 vChapterTxt = ''
 vError = 0
-vLine = 0
+vLine = ''
+vLineCount = 0
 vOutput = ''
 vPage = 0
 vRefPage =''
@@ -34,7 +35,7 @@ vShowBiblio = None
 # Print output headings
 # --------------------------------------------------------
 vOutput = 'Chapter | Page | Reference | Quote Page'
-print (vOutput)
+##print (vOutput)
 
 # --------------------------------------------------------
 # Loop through each line in the file
@@ -44,54 +45,57 @@ while 1:
     if not line: break
     
     # Count the lines
-    vLine+=1
+    vLineCount+=1
     
     # Extract the page number if present
-    s = line.strip()
-    if s[0:5] == 'Page ' and s.count(' of ') > 0: 
-        vPage = s[5:s.find(' of ')]
+    vLine = line.strip()
+    if vLine[0:5] == 'Page ' and vLine.count(' of ') > 0: 
+        vPage = vLine[5:vLine.find(' of ')]
         continue
     
     # If Reference section is reached then output the references
-    if line[0:12] == '@@References':
+    if vLine[0:12] == '@@References':
         vShowBiblio = True;
-        print ('--------------------------------------------------')
-        print ('References')
-        print ('==================================================')
+##        print ('--------------------------------------------------')
+##        print ('References')
+##        print ('==================================================')
         continue
     
     if vShowBiblio:
         vBiblio+=1
-        vOutput = line[0:line.find('Available online')]
+        vOutput = vLine[0:vLine.find('Available online')]
 #        print (vOutput)
         continue
     
-    # TODO See if the line contains an opening bracket but no closing bracket (i.e a broken reference)
-    if line.count(' (') > 0 and line.count(')') == 0:
+    # See if the line contains an opening bracket but no closing bracket (Shouldn't happen)
+    if vLine.count(' (') > 0 and vLine.count(')') == 0:
         vError+=1
-        print (vLine, line)
+        print (vLineCount, vLine)
         continue
 
     # Look for start of abstract
-    if line[0:10] == '@@Abstract':
+    if vLine[0:10] == '@@Abstract':
         vChapterTxt='ABSTRACT'
         
     # Look for chapter headings
-    elif line[0:2] == '@@':
+    elif vLine[0:2] == '@@':
         vChapter+=1
         vChapterTxt='CH'+str(vChapter)
 
     # If no opening bracket then there is no reference
-    if line.count('(') == 0: continue
+    if vLine.count('(') == 0: continue
 
     # Replace "; " with ")(" 
-    s = line.replace("; ",")(")
+    vLine = vLine.replace("; ",")(")
 
     # Loop through the characters and process each reference in brackets
-    while not s.count('(') == 0:
-        s = s[s.find('(')+1:]
-        vRef = s[0:s.find(')')]
+    while not vLine.count('(') == 0:
+        vLine = vLine[vLine.find('(')+1:]
+        vRef = vLine[0:vLine.find(')')]
 
+        # Strip the spaces
+        vRef = vRef.strip()
+        
         # Ignore if reference starts with: Figure
         if vRef[0:7] == ('Figure '): continue
 
@@ -101,10 +105,16 @@ while 1:
         # Ignore if reference starts with: Interviewee
         if vRef[0:12] == ('Interviewee '): continue
 
-        ## TODO What to do with references that are just the year?
-        if not vRef.count(',') == 1: continue
+        ## TODO What to do with references that are just the year
+        if len(vRef) == 4:
+            # Is it a year?
+            if not vRef[0:2] == '19' and not vRef[0:2] == '20':
+                continue
+
+            ## TODO What to do with these references?             
+            print ('####', vRef, line)
+            continue
            
-   
         ## TODO Ignore if there is not one comma only
         if not vRef.count(',') == 1: continue
    
@@ -124,7 +134,7 @@ while 1:
         
         # Output the Line Number | Reference | Chapter
         vOutput = vChapterTxt+'|'+vPage+'|'+vRef+'|'+vRefPage
-        print (vOutput)
+##        print (vOutput)
 
     # End while
 
@@ -136,9 +146,9 @@ while 1:
 #print ('==================================================')
 
 # Print chapter count
-print ('--------------------------------------------------')
-print ('There are',str(vBiblio),'References')
-print ('==================================================')
+#print ('--------------------------------------------------')
+#print ('There are',str(vBiblio),'References')
+#print ('==================================================')
 
 # Print error count
 if vError > 0:
