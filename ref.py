@@ -31,6 +31,7 @@ vRefAuthor1 = ''
 vRefFull = ''
 vRefPage =''
 vRefShort = ''
+vRefTitle = ''
 vRefYear = ''
 vRev = ''
 vShowBiblio = None
@@ -64,7 +65,7 @@ while 1:
     if vShowBiblio:
         vBiblio+=1
 
-        # Store the full reference up to "Avalable online"
+        # Store the full reference up to "Available online"
         vRefFull = vLine[0:vLine.find('Available online')]
         
         # Find the year by looking for the first open bracket plus a 2
@@ -80,6 +81,12 @@ while 1:
         
         # Store the reference year
         vRefYear = vLine[i+1:i+5]
+        
+        # Find article title (Title is from year onwards)
+        vRefTitle = vLine[i+6:]
+        if vRefTitle[0:1] == '.': vRefTitle = vRefTitle[1:]
+        vRefTitle = vRefTitle.strip()         
+        print ('### TITLE',vRefTitle)
 
         # Authors list is up to the first open bracket
         i = vLine.find('(')
