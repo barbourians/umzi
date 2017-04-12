@@ -1,0 +1,5 @@
+12 April 2017
+* Change the github repository name from wfence to barbourians
+
+8 April 2017
+* Rewrite the program to incorporate functions
