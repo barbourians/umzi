@@ -1,3 +1,6 @@
+13 April 2017
+* Changed code so that it would run under Python 2.7
+
 12 April 2017
 * Change the github repository name from wfence to barbourians
 
