@@ -52,9 +52,9 @@ while 1:
     # If Reference section is reached then output the references
     if vLine[0:12] == '@@References':
         vShowBiblio = True;
-        print ('--------------------------------------------------')
-        print ('References')
-        print ('==================================================')
+        print '--------------------------------------------------'
+        print 'References'
+        print '=================================================='
         continue
     
     # If Appendix is reached then don't process references
@@ -76,7 +76,7 @@ while 1:
         # If year not found then show error
         if i == -1:
             vError+=1
-            print ('### Error: Reference has no valid year', vLine)
+            print '### Error: Reference has no valid year', vLine
             continue
         
         # Store the reference year
@@ -86,14 +86,14 @@ while 1:
         vRefTitle = vLine[i+6:]
         if vRefTitle[0:1] == '.': vRefTitle = vRefTitle[1:]
         vRefTitle = vRefTitle.strip()         
-        print ('### TITLE',vRefTitle)
+        print '### TITLE', vRefTitle
 
         # Authors list is up to the first open bracket
         i = vLine.find('(')
         # If no open bracket then show error
         if not i > 0:
             vError+=1
-            print ('### Error: Reference has no year', vLine)
+            print '### Error: Reference has no year', vLine
             continue
         
         # Extract the Author list
@@ -111,21 +111,21 @@ while 1:
         # Trim the spaces
         vRefAuthor1 = vRefAuthor1.strip()
                 
-        print (vRefYear, vRefAuthor1,'~',vRefShort)
+        print vRefYear,vRefAuthor1,'~',vRefShort
         continue
     
 # End while
 
 # Print reference count
-print ('--------------------------------------------------')
-print ('There are',str(vBiblio),'References')
-print ('==================================================')
+print '--------------------------------------------------'
+print 'There are',str(vBiblio),'References'
+print '=================================================='
 
 # Print error count
 if vError > 0:
-    print ('##################################################')
-    print ('There are',str(vError),'ERROR LINES. Please fix!')
-    print ('##################################################')
+    print '##################################################'
+    print 'There are',str(vError),'ERROR LINES. Please fix!'
+    print '##################################################'
     
 # --------------------------------------------------------
 # Close the input file
