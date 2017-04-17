@@ -86,7 +86,7 @@ while 1:
         vRefTitle = vLine[i+6:]
         if vRefTitle[0:1] == '.': vRefTitle = vRefTitle[1:]
         vRefTitle = vRefTitle.strip()         
-        print '### TITLE', vRefTitle
+#        print '### TITLE', vRefTitle
 
         # Authors list is up to the first open bracket
         i = vLine.find('(')
